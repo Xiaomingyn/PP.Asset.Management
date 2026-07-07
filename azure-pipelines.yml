@@ -1,0 +1,44 @@
+# This is a sample Azure Pipelines YAML file for a Power Platform solution deployment pipeline. 
+# It includes stages for synchronization, deployment to test environments, and deployment to 
+# production environments. The pipeline uses templates for jobs and variables to maintain consistency and reusability.
+
+trigger:
+- none
+
+pool:
+  name: MyPipelines
+  vmImage: ubuntu-latest
+
+variables: 
+- template: Pipeline/Variables/global.yml
+
+stages:
+- stage: Synchronization
+  displayName: 'Synchronization PP Dev Env to DevOps Repo'
+  jobs:
+  - template: Pipeline/Jobs/sync_template.yml
+    parameters:
+      solutionName: ${{ variables.SolutionName }}
+      devSuffix: ${{ variables.DevSuffix }}
+      prodSuffix: ${{ variables.ProdSuffix }}
+      solutionFolder: ${{ variables.SolutionFolder }}
+      artifactName: ${{ variables.ArtifactName }}
+      serviceConnection: ${{ variables.ServiceConnectionDev }}
+- stage: Deployment2Test
+  displayName: 'Deployment to Test Environments'
+  jobs:
+  - template: Pipeline/Jobs/deploy_template.yml
+    parameters:
+      solutionName: ${{ variables.SolutionName }}
+      prodSuffix: ${{ variables.ProdSuffix }}
+      artifactName: ${{ variables.ArtifactName }}
+      serviceConnection: ${{ variables.ServiceConnectionTest }}
+- stage: Deployment2Prod
+  displayName: 'Deployment to Prod Environments'
+  jobs:
+  - template: Pipeline/Jobs/deploy_template.yml
+    parameters:
+      solutionName: ${{ variables.SolutionName }}
+      prodSuffix: ${{ variables.ProdSuffix }}
+      artifactName: ${{ variables.ArtifactName }}
+      serviceConnection: ${{ variables.ServiceConnectionProd }}

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{86726845-3e4d-4cce-9e0c-8e2a5e0bee71}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="ayc_name" select="1" icon="1" preview="1">
+        <row name="result" id="ayc_assetcheckid">
+          <cell name="ayc_name" width="300" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="ayc_assetcheck">
+          <attribute name="ayc_assetcheckid" />
+          <attribute name="ayc_name" />
+          <attribute name="createdon" />
+          <order attribute="ayc_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="1" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Inactive Asset Checks" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

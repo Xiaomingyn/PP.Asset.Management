@@ -1,0 +1,40 @@
+parameters:
+  solutionName: ''
+  prodSuffix: ''
+  artifactName: ''
+  serviceConnection: ''
+
+jobs:
+- job: Deploy
+  displayName: 'Deploy solution to target environment'
+  steps:
+  - task: PowerPlatformToolInstaller@2
+    displayName: 'Install Power Platform Tools'
+    inputs:
+      DefaultVersion: true
+      AddToolsToPath: true
+  
+  - task: PowerPlatformWhoAmi@2
+    displayName: 'Check connection to target environment'
+    inputs:
+      authenticationType: 'PowerPlatformSPN'
+      PowerPlatformSPN: '${{parameters.ServiceConnection}}'
+  
+  - task: DownloadBuildArtifacts@1
+    displayName: 'Download solution artifact'
+    inputs:
+      buildType: 'specific'
+      project: 'db3a8612-4e04-4c84-acba-193304e63205'
+      pipeline: '14'
+      buildVersionToDownload: 'latest'
+      downloadType: 'specific'
+      downloadPath: '$(System.ArtifactsDirectory)'
+  
+  - task: PowerPlatformImportSolution@2
+    displayName: 'Import solution to target environment'
+    inputs:
+      authenticationType: 'PowerPlatformSPN'
+      PowerPlatformSPN: '${{parameters.ServiceConnection}}'
+      SolutionInputFile: '$(System.ArtifactsDirectory)/${{parameters.ArtifactName}}/${{parameters.SolutionName}}${{parameters.ProdSuffix}}'
+      AsyncOperation: true
+      MaxAsyncWaitTime: '60'

@@ -1,0 +1,10 @@
+# yaml file manages common variables for synchronization pipeline and deployment pipeline
+variables: 
+  SolutionName: 'AssetManagement'
+  DevSuffix: '_unmanaged.zip'
+  ProdSuffix: '_managed.zip'
+  SolutionFolder: 'Solutions'
+  ArtifactName: 'drop'
+  ServiceConnectionProd: 'powerplatform-prod'
+  ServiceConnectionDev: 'powerplatform-dev'  
+  ServiceConnectionTest: 'powerplatform-test'      

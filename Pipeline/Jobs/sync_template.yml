@@ -1,0 +1,79 @@
+# This template file syncs the Power Platform development environment with the DevOps repository.
+
+parameters:
+  solutionName: ''
+  devSuffix: ''
+  prodSuffix: ''
+  solutionFolder: ''
+  artifactName: ''
+  serviceConnection: ''
+
+jobs:
+- job: Sync
+  displayName: 'Sync'
+  steps:
+  - task: PowerPlatformToolInstaller@2
+    displayName: 'Install Power Platform Tools'
+    inputs:
+      DefaultVersion: true
+      AddToolsToPath: true
+  
+  - task: PowerPlatformExportSolution@2
+    displayName: 'Export Solution as unmanaged from Dev Environment'
+    inputs:
+      authenticationType: 'PowerPlatformSPN'
+      PowerPlatformSPN: '${{parameters.ServiceConnection}}'
+      SolutionName: '${{parameters.SolutionName}}'
+      SolutionOutputFile: '$(Build.ArtifactStagingDirectory)/${{parameters.SolutionName}}${{parameters.DevSuffix}}'
+      AsyncOperation: true
+      MaxAsyncWaitTime: '60'
+  
+  - task: PowerPlatformChecker@2
+    displayName: 'Check Solution'
+    inputs:
+      authenticationType: 'PowerPlatformSPN'
+      PowerPlatformSPN: '${{parameters.ServiceConnection}}'
+      FilesToAnalyze: '$(Build.ArtifactStagingDirectory)/${{parameters.SolutionName}}${{parameters.DevSuffix}}'
+      RuleSet: '0ad12346-e108-40b8-a956-9a8f95ea18c9'
+  
+  - task: PowerPlatformUnpackSolution@2
+    displayName: 'Unpack Solution for syncing to repo'
+    inputs:
+      SolutionInputFile: '$(Build.ArtifactStagingDirectory)/${{parameters.SolutionName}}${{parameters.DevSuffix}}'
+      SolutionTargetFolder: '$(Build.SourcesDirectory)/${{parameters.SolutionFolder}}'
+  
+  - task: PowerPlatformExportSolution@2
+    displayName: 'Export Solution as managed from Dev Environment'
+    inputs:
+      authenticationType: 'PowerPlatformSPN'
+      PowerPlatformSPN: '${{parameters.ServiceConnection}}'
+      SolutionName: '${{parameters.SolutionName}}'
+      SolutionOutputFile: '$(Build.ArtifactStagingDirectory)/${{parameters.SolutionName}}${{parameters.ProdSuffix}}'
+      Managed: true
+      AsyncOperation: true
+      MaxAsyncWaitTime: '60'
+  
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish solution artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: '${{parameters.ArtifactName}}'
+      publishLocation: 'Container'
+  
+  - task: Bash@3
+    displayName: 'Commit and Push changes to Repo'  
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Write your commands here
+        git config --global user.email "$(Build.RequestedForEmail)"
+        git config --global user.name "$(Build.RequestedFor)"      
+        cd $(Build.SourcesDirectory)    
+        git add .      
+        # Check if there are actual changes before committing
+        if [ -z "$(git status --porcelain)" ]; then
+          echo "No changes to commit - solution files are identical to repo"
+          exit 0
+        fi
+        git commit -m "great new version!"      
+        git -c http.extraheader="AUTHORIZATION: bearer $(System.AccessToken)" push origin HEAD:main

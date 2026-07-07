@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{6cd24299-676a-4e9b-82ed-3442404d8f2a}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="ayc_name" select="1" icon="1" preview="1">
+        <row name="result" id="ayc_assetid">
+          <cell name="ayc_name" width="154" />
+          <cell name="ayc_serialnumber" width="119" />
+          <cell name="ayc_type" width="100" />
+          <cell name="ayc_description" width="106" />
+          <cell name="createdon" width="125" />
+          <cell name="ayc_acquisitiondate" width="136" />
+          <cell name="ayc_purchasevalue" width="126" />
+          <cell name="createdby" width="104" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="ayc_asset">
+          <attribute name="ayc_assetid" />
+          <attribute name="ayc_name" />
+          <attribute name="createdon" />
+          <order attribute="ayc_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="ayc_acquisitiondate" />
+          <attribute name="ayc_purchasevalue" />
+          <attribute name="ayc_serialnumber" />
+          <attribute name="ayc_type" />
+          <attribute name="createdby" />
+          <attribute name="ayc_description" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Assets" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>
