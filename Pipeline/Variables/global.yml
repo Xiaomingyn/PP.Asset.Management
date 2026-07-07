@@ -1,10 +1,10 @@
 # yaml file manages common variables for synchronization pipeline and deployment pipeline
 variables: 
-  SolutionName: 'AssetManagement'
-  DevSuffix: '_unmanaged.zip'
-  ProdSuffix: '_managed.zip'
-  SolutionFolder: 'Solutions'
-  ArtifactName: 'drop'
-  ServiceConnectionProd: 'powerplatform-prod'
-  ServiceConnectionDev: 'powerplatform-dev'  
-  ServiceConnectionTest: 'powerplatform-test'      
+  SolutionName: 'YOUR_SOLUTION_NAME'
+  DevSuffix: 'DEV_SOLUTION_SUFFIX' # FOR EXAMPLE. '_unmanaged.zip'
+  ProdSuffix: 'PROD_SOLUTION_SUFFIX' # FOR EXAMPLE. '_managed.zip'
+  SolutionFolder: 'THE_SOLUTION_FOLDER' # FOR EXAMPLE. 'Solutions'
+  ArtifactName: 'THE_ARTIFACT_NAME' # FOR EXAMPLE. 'solution-artifact'
+  ServiceConnectionProd: 'THE_SERVICE_CONNECTION_PROD' # Service connection for production environment. 
+  ServiceConnectionDev: 'THE_SERVICE_CONNECTION_DEV' # Service connection for development environment. 
+  ServiceConnectionTest: 'THE_SERVICE_CONNECTION_TEST' # Service connection for test environment. 
