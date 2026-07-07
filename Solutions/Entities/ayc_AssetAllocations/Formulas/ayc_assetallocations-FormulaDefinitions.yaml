@@ -1,1 +1,0 @@
-ayc_expectedreturndate: =DateAdd(ayc_allocationdate, 2, TimeUnit.Years)
