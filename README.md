@@ -20,8 +20,7 @@ In oder to enable this possiblity, a few things need to be prepared beforehand:
 
 ## 2. CI/CD Pipelines
 
-Using the azure-pipeline.yml file for updating the code base from the development environment, and also for deployment solution to the 
-target (test or production) environment. The pipeline is designed for both updating/synchronization and deployment using different stages, select the appropriate stage(s) while triggering the pipeline.
+Using the azure-pipeline.yml file for updating the code base from the development environment, and also for deployment solution to the target (test or production) environment. The pipeline is designed for both updating/synchronization and deployment using different stages, select the appropriate stage(s) while triggering the pipeline.
 
 **Note:** the build service account "{YourProjectName} Build Service ({YourOrgName})" need to be granted with the git **"contributer"** permission on the repository scope, since the build service account is used to upload changes to the remote repo branch. The exact permissions required are as follows:
 
@@ -32,7 +31,13 @@ target (test or production) environment. The pipeline is designed for both updat
 |Create branch |	Allow (recommended)| 
 |Create tag |	Allow (if pushing tags)| 
 
-## 🤝 Contributing
+# How to use
+
+This project is rather straightforward to get started with. The pipeline is designed for both updating/synchronization and deployment using different stages, select the appropriate stage(s) while triggering the pipeline when use it.
+
+The setup of this project is modular and fully parameterized. The "Pipeline/Jobs/sync_template.yml" file is responsible for updating/synchronization workflow and the "Pipeline/Jobs/deploy_template.yml" file takes care of the deployment workflow. All required parameters are defined in the "Pipeline/Variables/global.yml" file. Before triggering the first pipeline, remember to modify the "global.yml" file using the correct parameters defined in your working environment.  
+
+# 🤝 Contributing
 1. Fork → dev branch
 2. uv sync → test
 
